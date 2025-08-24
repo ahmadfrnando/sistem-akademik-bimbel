@@ -27,4 +27,9 @@ class JawabanPilihanGandaSiswa extends Model
     {
         return $this->belongsTo(Siswa::class);
     }
+
+    public function tugas()
+    {
+        return $this->belongsTo(Tugas::class);
+    }
 }

@@ -26,7 +26,7 @@ class TugasController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = $this->tugas->select('*');
+            $data = $this->tugas->with(['jadwal', 'kategori_tugas', 'guru'])->select('*');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('jam', function ($row) {
@@ -84,9 +84,10 @@ class TugasController extends Controller
      */
     public function show(string $id)
     {
-        $data = $this->tugas->all();
+        $data = $this->tugas->findOrFail($id);
         return view('pages.siswa.tugas.show', [
-            'data' => $data
+            'data' => $data,
+            'siswa_id' => $this->dataUser->id
         ]);
     }
 

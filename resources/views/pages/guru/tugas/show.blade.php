@@ -188,6 +188,9 @@
             data: {
                 id: id
             },
+            headers: {
+                'X-CSRF-TOKEN': $('input[name="_token"]').val()
+            },
             success: function(response) {
                 Swal.fire({
                     icon: 'success',

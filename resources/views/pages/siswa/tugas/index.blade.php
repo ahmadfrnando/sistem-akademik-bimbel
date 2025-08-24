@@ -35,7 +35,7 @@
 @push('scripts')
 <script type="text/javascript">
     $(document).ready(function() {
-        var route = "{{ route('guru.siswa.index') }}";
+        var route = "{{ route('siswa.tugas.index') }}";
         var selector = ".data-table";
         var columns = [{
                 data: 'DT_RowIndex',
@@ -48,7 +48,7 @@
                 data: 'tanggal',
                 name: 'tanggal',
                 render: function(data, type, row) {
-                    return moment(data).locale('id').format('ll') ?? '-';
+                    return data ? moment(data).locale('id').format('ll') : '-';
                 }
             },
             {

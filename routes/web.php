@@ -23,6 +23,7 @@ use App\Http\Controllers\Guru\TugasController as GuruTugasController;
 use App\Http\Controllers\Guru\PertanyaanController as GuruPertanyaanController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Guru\UserController as GuruUserController;
+use App\Http\Controllers\Siswa\JawabanPilihanGandaSiswaController;
 use App\Http\Controllers\Siswa\TugasController;
 use App\Http\Controllers\Siswa\TugasController as SiswaTugasController;
 use Illuminate\Support\Facades\Route;
@@ -95,7 +96,6 @@ Route::middleware(['auth', 'role:2'])->name('guru.')->prefix('guru')->group(func
     Route::get('/pertanyaan', [GuruPertanyaanController::class, 'index'])->name('pertanyaan.index');
     Route::post('/pertanyaan', [GuruPertanyaanController::class, 'store'])->name('pertanyaan.store');
     Route::post('/pertanyaan/destroy', [GuruPertanyaanController::class, 'destroy'])->name('pertanyaan.destroy');
-
     // jadwal
     Route::get('/jadwal', [GuruJadwalController::class, 'index'])->name('jadwal.index');
 });
@@ -103,6 +103,8 @@ Route::middleware(['auth', 'role:3'])->name('siswa.')->prefix('siswa')->group(fu
     Route::get('/dashboard', [SiswaDashboardController::class, 'index'])->name('dashboard');
     Route::get('/tugas', [SiswaTugasController::class, 'index'])->name('tugas.index');
     Route::get('/tugas/{tugas}/show', [SiswaTugasController::class, 'show'])->name('tugas.show');
+    // jawaban
+    Route::post('/jawaban-pg/store', [JawabanPilihanGandaSiswaController::class, 'store'])->name('jawaban-pg.store');
 });
 Route::middleware(['auth', 'role:4'])->name('kepsek.')->prefix('kepsek')->group(function () {
     Route::get('/dashboard', [KepsekDashboardController::class, 'index'])->name('dashboard');
