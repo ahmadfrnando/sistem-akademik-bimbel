@@ -1,0 +1,49 @@
+body {
+    background-color: #f5f3f0 !important;
+}
+
+.sidebar-item > button {
+    width: 100% !important;
+    background-color: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+    text-align: left !important
+    /* display: block !important;
+    padding: .7rem 1rem !important;
+    font-size: 1rem !important;
+    display: flex !important;
+    align-items: center !important;
+    border-radius: .5rem !important;
+    transition: all .5s !important;
+    text-decoration: none !important;
+    color: #25396f !important; */
+}
+
+
+.sidebar-item > button:hover{
+    background-color:#f0f1f5 !important
+}
+
+.sidebar-wrapper .menu .sidebar-item.active>.sidebar-link {
+    background-color: #ffc107 !important;
+}
+
+
+.sidebar-wrapper .menu .sidebar-item.active>.sidebar-link span{
+    color: #000 !important;
+}
+
+.sidebar-wrapper .menu .sidebar-item.active>.sidebar-link svg, .sidebar-wrapper .menu .sidebar-item.active>.sidebar-link i {
+    fill: #000 !important;
+    color: #000 !important;
+}
+
+.pagination.pagination-primary .page-item.active .page-link {
+    background-color: #ffc107 !important;
+    border-color: #ffc107 !important;
+    box-shadow: 0 2px 5px rgba(67, 94, 190, .3);
+}
+
+.page-item.active .page-link {
+    color: #000000 !important;
+}
