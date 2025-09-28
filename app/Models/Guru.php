@@ -58,4 +58,42 @@ class Guru extends Model
     {
         return $this->hasMany(Jadwal::class);
     }
+
+    public function getJadwalBerjalan()
+    {
+        return $this->jadwal()
+            ->where(function ($q) {
+                $q->where('tanggal', '>', now()->toDateString())
+                    ->orWhere(function ($q2) {
+                        $q2->where('tanggal', now()->toDateString())
+                            ->where('jam_selesai', '>=', now()->format('H:i'));
+                    });
+            })
+            ->get();
+    }
+
+    public function getCountJadwalTersedia()
+    {
+        $jadwalAvailId = $this->getJadwalBerjalan()->pluck('id');
+        return Pembelajaran::whereNotIn('jadwal_id', $jadwalAvailId)->count() + Tugas::whereNotIn('jadwal_id', $jadwalAvailId)->count();
+    }
+    
+    public function getPembelajaranBerjalan()
+    {
+        return Pembelajaran::whereIn('jadwal_id', $this->getJadwalBerjalan()->pluck('id'))->get();
+    }
+
+    public function getTugasBerjalan()
+    {
+        return Tugas::whereIn('jadwal_id', $this->getJadwalBerjalan()->pluck('id'))->get();
+    }
+
+    public function getSiswaPalingAktif()
+    {
+        return Siswa::withCount('jawaban_essay_siswa as jawaban_essay_siswa_count', 'jawaban_pilihan_ganda_siswa as jawaban_pilihan_ganda_siswa_count')
+            ->orderBy('jawaban_essay_siswa_count', 'desc')
+            ->orderBy('jawaban_pilihan_ganda_siswa_count', 'desc')
+            ->limit(5)
+            ->get();
+    }
 }

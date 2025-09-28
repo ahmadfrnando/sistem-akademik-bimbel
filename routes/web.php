@@ -51,6 +51,7 @@ Route::put('/pengaturan-akun', [AuthController::class, 'update'])->name('pengatu
 Route::get('/search-guru', [AjaxLoadController::class, 'getGuru'])->name('search.guru');
 Route::get('/search-siswa', [AjaxLoadController::class, 'getSiswa'])->name('search.siswa');
 Route::get('/search-jadwal-pembelajaran', [AjaxLoadController::class, 'getJadwalPembelajaran'])->name('search.jadwal.pembelajaran');
+// Route::get('/tests-import', [GuruDashboardController::class, 'import']);
 
 Route::middleware(['auth', 'role:1'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -91,10 +92,14 @@ Route::middleware(['auth', 'role:2'])->name('guru.')->prefix('guru')->group(func
     Route::post('/tugas/store', [GuruTugasController::class, 'store'])->name('tugas.store');
     Route::post('/tugas/destroy', [GuruTugasController::class, 'destroy'])->name('tugas.destroy');
     Route::post('/tugas/send', [GuruTugasController::class, 'send'])->name('tugas.send');
+    Route::post('/tugas/import', [GuruTugasController::class, 'import'])->name('tugas.import');
+    Route::post('/tugas/import-essay', [GuruTugasController::class, 'importEssay'])->name('tugas.import.essay');
+    Route::get('/tugas/template', [GuruTugasController::class, 'template'])->name('tugas.template');
 
     // pertanyaan
     Route::get('/pertanyaan', [GuruPertanyaanController::class, 'index'])->name('pertanyaan.index');
     Route::post('/pertanyaan', [GuruPertanyaanController::class, 'store'])->name('pertanyaan.store');
+    Route::post('/pertanyaan-essay', [GuruPertanyaanController::class, 'storeEssay'])->name('pertanyaan.store.essay');
     Route::post('/pertanyaan/destroy', [GuruPertanyaanController::class, 'destroy'])->name('pertanyaan.destroy');
     // jadwal
     Route::get('/jadwal', [GuruJadwalController::class, 'index'])->name('jadwal.index');

@@ -83,9 +83,11 @@ class AjaxLoadController extends Controller
     {
         $guru_id = Pengguna::getUserGuru()->id ?? null;
         $jadwalAvailId = \App\Models\Pembelajaran::where('guru_id', $guru_id)->pluck('jadwal_id')->toArray();
+        $jadwalAvailId2 = \App\Models\Tugas::where('guru_id', $guru_id)->pluck('jadwal_id')->toArray();
         $searchTerm = $request->input('q');
         $data = \App\Models\Jadwal::where('guru_id', $guru_id)
             ->whereNotIn('id', $jadwalAvailId)
+            ->whereNotIn('id', $jadwalAvailId2)
             ->where('nama_jadwal', 'LIKE', '%' . $searchTerm . '%')
             ->get(['id', 'nama_jadwal', 'tanggal', 'jam_mulai', 'jam_selesai'])
             ->map(function ($item) {

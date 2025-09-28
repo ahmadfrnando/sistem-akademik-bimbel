@@ -47,4 +47,14 @@ class Siswa extends Model
     {
         return $this->belongsTo(User::class); // Setiap siswa dimiliki oleh satu user
     }
+
+    public function jawaban_essay_siswa()
+    {
+        return $this->hasMany(JawabanEssaySiswa::class);
+    }
+
+    public function jawaban_pilihan_ganda_siswa()
+    {
+        return $this->hasMany(JawabanPilihanGandaSiswa::class);
+    }
 }

@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Guru;
 use App\Facades\Pengguna;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TugasRequest;
+use App\Imports\PertanyaanEssayImport;
+use App\Imports\PertanyaanImport;
 use App\Models\Nilai;
 use App\Models\RefKategoriTugas;
 use App\Models\Tugas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Yajra\DataTables\Facades\DataTables;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TugasController extends Controller
 {
@@ -29,6 +32,7 @@ class TugasController extends Controller
 
     public function index(Request $request)
     {
+        // dd(now());
         if ($request->ajax()) {
             $data = $this->tugas->select('*');
             return DataTables::of($data)
@@ -48,11 +52,8 @@ class TugasController extends Controller
                     return $row->tugas ? $row->tugas->nilai->count() : 0;
                 })
                 ->addColumn('status', function ($row) {
-                    $row = [
-                        'tanggal' => $row->jadwal->tanggal,
-                        'jam_selesai' => $row->jadwal->jam_selesai
-                    ];
-                    return view('pages.guru.tugas._status')->with('row', $row)->render();
+                    $dateTime = $row->jadwal->tanggal . ' ' . $row->jadwal->jam_selesai;
+                    return view('pages.guru.tugas._status')->with('row', $dateTime)->render();
                 })
                 ->addColumn('action', 'pages.guru.tugas._action')
                 ->rawColumns(['action', 'status', 'jam', 'kategori', 'total_jawaban'])
@@ -131,9 +132,16 @@ class TugasController extends Controller
     public function show(string $id)
     {
         $data = $this->tugas->with('jadwal')->findOrFail($id);
-        return view('pages.guru.tugas.show', [
-            'data' => $data
-        ]);
+        $kategori = $data->kategori_tugas->id;
+        if ($kategori == 1) {
+            return view('pages.guru.tugas.pilihan-ganda.show', [
+                'data' => $data
+            ]);
+        } else {
+            return view('pages.guru.tugas.essay.show', [
+                'data' => $data
+            ]);
+        }
     }
 
     /**
@@ -196,5 +204,50 @@ class TugasController extends Controller
                 'message' => $th->getMessage(),
             ], 500);
         }
+    }
+
+    public function import(Request $request)
+    {
+        try {
+            // dd($request);
+            $id = $request->tugas_id;
+            $file = $request->file('file');
+            Excel::import(new PertanyaanImport($id), $file);
+
+            return Response()->json([
+                'success' => true,
+                'message' => 'Tugas berhasil diimport!'
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function importEssay(Request $request)
+    {
+        try {
+            // dd($request);
+            $id = $request->tugas_id;
+            $file = $request->file('file');
+            Excel::import(new PertanyaanEssayImport($id), $file);
+
+            return Response()->json([
+                'success' => true,
+                'message' => 'Tugas berhasil diimport!'
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function template()
+    {
+        return public_path('template/_template_tugas_pilihan_ganda.xlsx');
     }
 }

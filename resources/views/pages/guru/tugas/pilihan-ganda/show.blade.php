@@ -33,6 +33,7 @@
             </div>
         </div>
     </div>
+    @if($data->is_draft == true)
     <div class="card shadow-sm">
         <div class="card-header">
             <h5 class="card-title mb-0">
@@ -58,9 +59,6 @@
                 <div id="opsi-container">
                     <!-- Opsi akan di-generate oleh JS -->
                 </div>
-                <button type="button" class="btn btn-sm btn-outline-success mb-3" onclick="addOpsi()">
-                    + Tambah Opsi
-                </button>
                 <hr>
 
                 <div class="d-flex justify-content-end">
@@ -69,6 +67,7 @@
             </form>
         </div>
     </div>
+    @endif
     <div class="card shadow-sm mt-4">
         <div class="card-header">
             <h5 class="card-title mb-0">Pertanyaan yang Telah Disimpan</h5>
@@ -111,11 +110,13 @@
                         </tbody>
                     </table>
                 </div>
+                @if($data->is_draft == true)
                 <div class="card-footer  d-flex justify-content-end">
                     <a href="javascript:void(0)" onClick="deleteFunc({{ $p->id }})" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Pertanyaan">
                         Hapus
                     </a>
                 </div>
+                @endif
             </div>
             @endforeach
             @endif

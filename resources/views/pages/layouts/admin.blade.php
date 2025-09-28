@@ -16,7 +16,9 @@
     <link rel="stylesheet" href="/assets/compiled/css/table-datatable-jquery.css">
     <!-- <link rel="stylesheet" href="/assets/extensions/choices.js/public/assets/styles/choices.css"> -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
+    <script>
+        document.documentElement.setAttribute('data-bs-theme', 'light');
+    </script>
     @stack('styles')
     @stack('scripts')
     @routes

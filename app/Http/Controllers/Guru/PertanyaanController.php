@@ -91,6 +91,31 @@ class PertanyaanController extends Controller
         }
     }
 
+    public function storeEssay(Request $request)
+    {
+        $validated = $request->validate([
+            'pertanyaan' => 'required|string',
+            'bobot'      => 'required|integer|min:1',
+        ]);
+
+        try {
+            Pertanyaan::create([
+                'tugas_id'   => $request->tugas_id ?? null, // opsional kalau ada tugas
+                'pertanyaan' => $validated['pertanyaan'],
+                'bobot'      => $validated['bobot'],
+            ]);
+            return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil diubah!'
+            ], 200);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
     /**
      * Display the specified resource.
      */

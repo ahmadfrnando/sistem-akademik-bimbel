@@ -36,6 +36,8 @@
     </div>
     @include('pages.guru.tugas._form')
     @include('pages.guru.tugas._show_submissions')
+    @include('pages.guru.tugas.pilihan-ganda._show_import')
+    @include('pages.guru.tugas.essay._show_import')
 </section>
 @push('scripts')
 <script type="text/javascript">
@@ -158,6 +160,14 @@
         var table = initializeDataTable(selector, route, columns);
     }
 
+    function showImportFunc(id, type) {
+        const modalId = type === 1 ? '#modalFormImportPg' : '#modalFormImportEssay';
+        const inputId = type === 1 ?'#tugas_id' : '#tugas_id_essay';
+
+        $(modalId).modal('show');
+        $(inputId).val(id);
+    }
+
     function editFunc(id) {
         console.log('edit diklik:' + id);
         $.ajax({
@@ -265,6 +275,7 @@
             e.preventDefault();
         });
     }
+
     $('#submitForm').submit(function(e) {
         e.preventDefault();
         $("#btn-save").prop('disabled', true);
@@ -294,6 +305,80 @@
                     showToast('error', 'Data gagal disimpan\n' + errorMessages);
                 } else {
                     showToast('error', 'Data gagal disimpan\n' + xhr.responseJSON?.message || 'Terjadi kesalahan.');
+                }
+            },
+        });
+    });
+
+    $('#submitFormImport').submit(function(e) {
+        e.preventDefault();
+        $("#btn-save").prop('disabled', true);
+        $("#btn-save").html('Menyimpan... <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+        let form = $(this);
+        let formData = new FormData(form[0]);
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('guru.tugas.import') }}",
+            data: formData,
+            contentType: false,
+            processData: false,
+            headers: {
+                'X-CSRF-TOKEN': $('input[name="_token"]').val()
+            },
+            success: (res) => {
+                $("#modalFormImportPg").modal('hide');
+                var oTable = $('.data-table').dataTable();
+                oTable.fnDraw(false);
+                $("#btn-save").prop('disabled', false);
+                $("#btn-save").html('Simpan');
+                showToast('success', res.message);
+            },
+            error: function(xhr) {
+                $("#btn-save").prop('disabled', false);
+                $("#btn-save").html('Simpan');
+                if (xhr.status === 422) {
+                    let res = xhr.responseJSON;
+                    let errorMessages = Object.values(res.errors).flat().join('\n');
+                    showToast('error', 'Data gagal diimport\n' + errorMessages);
+                } else {
+                    showToast('error', 'Data gagal diimport\n' + xhr.responseJSON?.message || 'Terjadi kesalahan.');
+                }
+            },
+        });
+    });
+    
+    $('#submitFormImportEssay').submit(function(e) {
+        e.preventDefault();
+        $("#btn-save").prop('disabled', true);
+        $("#btn-save").html('Menyimpan... <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+        let form = $(this);
+        let formData = new FormData(form[0]);
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('guru.tugas.import.essay') }}",
+            data: formData,
+            contentType: false,
+            processData: false,
+            headers: {
+                'X-CSRF-TOKEN': $('input[name="_token"]').val()
+            },
+            success: (res) => {
+                $("#modalFormImportEssay").modal('hide');
+                var oTable = $('.data-table').dataTable();
+                oTable.fnDraw(false);
+                $("#btn-save").prop('disabled', false);
+                $("#btn-save").html('Simpan');
+                showToast('success', res.message);
+            },
+            error: function(xhr) {
+                $("#btn-save").prop('disabled', false);
+                $("#btn-save").html('Simpan');
+                if (xhr.status === 422) {
+                    let res = xhr.responseJSON;
+                    let errorMessages = Object.values(res.errors).flat().join('\n');
+                    showToast('error', 'Data gagal diimport\n' + errorMessages);
+                } else {
+                    showToast('error', 'Data gagal diimport\n' + xhr.responseJSON?.message || 'Terjadi kesalahan.');
                 }
             },
         });
