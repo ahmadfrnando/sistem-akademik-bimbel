@@ -21,6 +21,7 @@
                             <th>Nama Jadwal</th>
                             <th>Jam</th>
                             <th>Keterangan</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -62,6 +63,13 @@
                 data: 'keterangan',
                 name: 'keterangan',
                 className: 'w-20',
+            },
+            {
+                data: 'status',
+                name: 'status',
+                className: 'w-20',
+                orderable: false,
+                searchable: false
             },
         ];
         var table = initializeDataTable(selector, route, columns);

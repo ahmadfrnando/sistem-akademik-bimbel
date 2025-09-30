@@ -90,8 +90,7 @@ class Guru extends Model
 
     public function getSiswaPalingAktif()
     {
-        return Siswa::withCount('jawaban_essay_siswa as jawaban_essay_siswa_count', 'jawaban_pilihan_ganda_siswa as jawaban_pilihan_ganda_siswa_count')
-            ->orderBy('jawaban_essay_siswa_count', 'desc')
+        return Siswa::withCount('jawaban_pilihan_ganda_siswa as jawaban_pilihan_ganda_siswa_count')
             ->orderBy('jawaban_pilihan_ganda_siswa_count', 'desc')
             ->limit(5)
             ->get();

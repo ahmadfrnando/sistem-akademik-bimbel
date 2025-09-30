@@ -27,9 +27,4 @@ class Pertanyaan extends Model
     {
         return $this->hasMany(JawabanPilihanGandaSiswa::class);
     }
-
-    public function jawaban_essay_siswa()
-    {
-        return $this->hasMany(JawabanEssaySiswa::class);
-    }
 }

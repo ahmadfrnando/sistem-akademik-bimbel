@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Jadwal;
 use App\Models\Pembelajaran;
 use App\Models\Siswa;
+use App\Models\Tugas;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -26,7 +27,7 @@ class JadwalController extends Controller
     }
 
     public function index(Request $request)
-    {   
+    {
         $jadwalIdExists = Pembelajaran::where('guru_id', $this->dataUser->id)->get()->pluck('jadwal_id')->toArray();
         if ($request->ajax()) {
             $data = $this->jadwal->whereNotIn('id', $jadwalIdExists)->select('*');
@@ -37,6 +38,14 @@ class JadwalController extends Controller
                     $jamSelesai = \Carbon\Carbon::parse($row->jam_selesai)->format('H:i');
                     return $jamMulai . ' - ' . $jamSelesai;
                 })
+                ->addColumn('status', function ($row) {
+                    $row = [
+                        'isTugas' => Tugas::where('guru_id', $this->dataUser->id)->where('jadwal_id', $row->id)->exists(),
+                        'isPembelajaran' => Pembelajaran::where('guru_id', $this->dataUser->id)->where('jadwal_id', $row->id)->exists()
+                    ];
+                    return view('pages.guru.jadwal._status')->with('row', $row)->render();
+                })
+                ->rawColumns(['status'])
                 ->make(true);
         }
         return view('pages.guru.jadwal.index');

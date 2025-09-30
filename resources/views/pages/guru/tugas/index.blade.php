@@ -22,7 +22,6 @@
                             <th>No</th>
                             <th>Tanggal</th>
                             <th>Nama Tugas</th>
-                            <th>Kategori Tugas</th>
                             <th>Jam</th>
                             <th>Total Jawaban</th>
                             <th>Status</th>
@@ -36,8 +35,7 @@
     </div>
     @include('pages.guru.tugas._form')
     @include('pages.guru.tugas._show_submissions')
-    @include('pages.guru.tugas.pilihan-ganda._show_import')
-    @include('pages.guru.tugas.essay._show_import')
+    @include('pages.guru.tugas._show_import')
 </section>
 @push('scripts')
 <script type="text/javascript">
@@ -54,6 +52,8 @@
             {
                 data: 'tanggal',
                 name: 'tanggal',
+                orderable: true,
+                searchable: true,
                 render: function(data, type, row) {
                     return moment(data).locale('id').format('ll') ?? '-';
                 }
@@ -65,26 +65,16 @@
                 searchable: true
             },
             {
-                data: 'kategori',
-                name: 'kategori',
-                orderable: true,
-                searchable: true
-            },
-            {
                 data: 'jam',
-                name: 'jam',
-                orderable: false,
-                searchable: false
+                name: 'jam'
             },
             {
                 data: 'total_jawaban',
-                name: 'total_jawaban'
+                name: 'total_jawaban',
             },
             {
                 data: 'status',
-                name: 'status',
-                orderable: true,
-                searchable: true
+                name: 'status'
             },
             {
                 data: 'action',
@@ -102,7 +92,6 @@
         $('.modal-title').html("Tambah Tugas");
         $('#modalForm').modal('show');
         $('#id').val('');
-        $('#kategori_tugas_id').val(null).trigger('change');
         $('#guru_id').val('{{ $guru_id }}');
         $('#jadwal_id').val(null).trigger('change');
         $('#jadwal_id').select2({
@@ -160,9 +149,9 @@
         var table = initializeDataTable(selector, route, columns);
     }
 
-    function showImportFunc(id, type) {
-        const modalId = type === 1 ? '#modalFormImportPg' : '#modalFormImportEssay';
-        const inputId = type === 1 ?'#tugas_id' : '#tugas_id_essay';
+    function showImportFunc(id) {
+        const modalId = '#modalFormImportPg';
+        const inputId = '#tugas_id';
 
         $(modalId).modal('show');
         $(inputId).val(id);
@@ -188,7 +177,6 @@
                 $('#guru_id').val(response.data.guru_id);
                 $('#judul').val(response.data.judul);
                 $('#keterangan').val(response.data.keterangan);
-                $('#kategori_tugas_id').val(response.data.kategori_tugas_id).trigger('change');
 
                 let $modal = $('#modalForm');
                 let $jadwal = $('#jadwal_id');
@@ -327,43 +315,6 @@
             },
             success: (res) => {
                 $("#modalFormImportPg").modal('hide');
-                var oTable = $('.data-table').dataTable();
-                oTable.fnDraw(false);
-                $("#btn-save").prop('disabled', false);
-                $("#btn-save").html('Simpan');
-                showToast('success', res.message);
-            },
-            error: function(xhr) {
-                $("#btn-save").prop('disabled', false);
-                $("#btn-save").html('Simpan');
-                if (xhr.status === 422) {
-                    let res = xhr.responseJSON;
-                    let errorMessages = Object.values(res.errors).flat().join('\n');
-                    showToast('error', 'Data gagal diimport\n' + errorMessages);
-                } else {
-                    showToast('error', 'Data gagal diimport\n' + xhr.responseJSON?.message || 'Terjadi kesalahan.');
-                }
-            },
-        });
-    });
-    
-    $('#submitFormImportEssay').submit(function(e) {
-        e.preventDefault();
-        $("#btn-save").prop('disabled', true);
-        $("#btn-save").html('Menyimpan... <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
-        let form = $(this);
-        let formData = new FormData(form[0]);
-        $.ajax({
-            type: 'POST',
-            url: "{{ route('guru.tugas.import.essay') }}",
-            data: formData,
-            contentType: false,
-            processData: false,
-            headers: {
-                'X-CSRF-TOKEN': $('input[name="_token"]').val()
-            },
-            success: (res) => {
-                $("#modalFormImportEssay").modal('hide');
                 var oTable = $('.data-table').dataTable();
                 oTable.fnDraw(false);
                 $("#btn-save").prop('disabled', false);

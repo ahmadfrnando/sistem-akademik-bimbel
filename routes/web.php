@@ -17,6 +17,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Guru\SiswaController as GuruSiswaController;
 use App\Http\Controllers\Guru\KelolaPembelajaranController;
 use App\Http\Controllers\Admin\KelolaSiswaKelasController;
+use App\Http\Controllers\Admin\NilaiController;
 use App\Http\Controllers\Admin\PembelajaranController;
 use App\Http\Controllers\Guru\PembelajaranController as GuruPembelajaranController;
 use App\Http\Controllers\Guru\TugasController as GuruTugasController;
@@ -71,6 +72,9 @@ Route::middleware(['auth', 'role:1'])->name('admin.')->prefix('admin')->group(fu
     Route::get('/edit-akun/{id}', [AkunController::class, 'edit'])->name('akun.edit');
     Route::put('/ubah-akun/{id}', [AkunController::class, 'updateAkun'])->name('akun.update');
     Route::put('/ubah-password/{id}', [AkunController::class, 'updatePassword'])->name('password.update');
+
+    // kelola nilai
+    Route::resource('/nilai', NilaiController::class);
 });
 Route::middleware(['auth', 'role:2'])->name('guru.')->prefix('guru')->group(function () {
     Route::get('/dashboard', [GuruDashboardController::class, 'index'])->name('dashboard');
@@ -93,13 +97,11 @@ Route::middleware(['auth', 'role:2'])->name('guru.')->prefix('guru')->group(func
     Route::post('/tugas/destroy', [GuruTugasController::class, 'destroy'])->name('tugas.destroy');
     Route::post('/tugas/send', [GuruTugasController::class, 'send'])->name('tugas.send');
     Route::post('/tugas/import', [GuruTugasController::class, 'import'])->name('tugas.import');
-    Route::post('/tugas/import-essay', [GuruTugasController::class, 'importEssay'])->name('tugas.import.essay');
     Route::get('/tugas/template', [GuruTugasController::class, 'template'])->name('tugas.template');
 
     // pertanyaan
     Route::get('/pertanyaan', [GuruPertanyaanController::class, 'index'])->name('pertanyaan.index');
     Route::post('/pertanyaan', [GuruPertanyaanController::class, 'store'])->name('pertanyaan.store');
-    Route::post('/pertanyaan-essay', [GuruPertanyaanController::class, 'storeEssay'])->name('pertanyaan.store.essay');
     Route::post('/pertanyaan/destroy', [GuruPertanyaanController::class, 'destroy'])->name('pertanyaan.destroy');
     // jadwal
     Route::get('/jadwal', [GuruJadwalController::class, 'index'])->name('jadwal.index');

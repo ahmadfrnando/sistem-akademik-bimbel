@@ -22,10 +22,10 @@ class Tugas extends Model
         return $this->belongsTo(Jadwal::class);
     }
 
-    public function kategori_tugas()
-    {
-        return $this->belongsTo(RefKategoriTugas::class);
-    }
+    // public function kategori_tugas()
+    // {
+    //     return $this->belongsTo(RefKategoriTugas::class);
+    // }
 
     public function guru()
     {
@@ -35,5 +35,17 @@ class Tugas extends Model
     public function nilai()
     {
         return $this->hasMany(Nilai::class);
+    }
+
+    public function jawabanPilihanGandaSiswa()
+    {
+        return $this->hasManyThrough(
+            JawabanPilihanGandaSiswa::class,     // model tujuan
+            Pertanyaan::class,  // model perantara
+            'tugas_id',         // foreign key di tabel pertanyaan
+            'pertanyaan_id',    // foreign key di tabel jawaban
+            'id',               // local key di tabel tugas
+            'id'                // local key di tabel pertanyaan
+        );
     }
 }

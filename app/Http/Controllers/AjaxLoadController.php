@@ -88,6 +88,9 @@ class AjaxLoadController extends Controller
         $data = \App\Models\Jadwal::where('guru_id', $guru_id)
             ->whereNotIn('id', $jadwalAvailId)
             ->whereNotIn('id', $jadwalAvailId2)
+            ->where(function ($query) {
+                $query->where('tanggal', '>=', now()->format('Y-m-d'));
+            })
             ->where('nama_jadwal', 'LIKE', '%' . $searchTerm . '%')
             ->get(['id', 'nama_jadwal', 'tanggal', 'jam_mulai', 'jam_selesai'])
             ->map(function ($item) {

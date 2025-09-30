@@ -44,6 +44,18 @@ Breadcrumbs::for('admin.user.index', function (BreadcrumbTrail $trail) {
     $trail->push('Update Akun', route('admin.user.index'));
 });
 
+// admin > nilai
+Breadcrumbs::for('admin.nilai.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.dashboard');
+    $trail->push('Nilai Siswa', route('admin.nilai.index'));
+});
+
+// admin > nilai > show
+Breadcrumbs::for('admin.nilai.show', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.nilai.index');
+    $trail->push('Detail', route('admin.nilai.show', 'id'));
+});
+
 // end admin
 
 // start guru

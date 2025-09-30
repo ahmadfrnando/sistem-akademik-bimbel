@@ -26,7 +26,7 @@ class TugasController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = $this->tugas->with(['jadwal', 'kategori_tugas', 'guru'])->select('*');
+            $data = $this->tugas->with(['jadwal', 'guru'])->orderBy('created_at', 'desc')->select('*');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('jam', function ($row) {
@@ -36,9 +36,6 @@ class TugasController extends Controller
                 })
                 ->addColumn('tanggal', function ($row) {
                     return $row->jadwal->tanggal ?? '-';
-                })
-                ->addColumn('kategori', function ($row) {
-                    return $row->kategori_tugas->kategori ?? '-';
                 })
                 ->addColumn('guru', function ($row) {
                     return $row->guru->nama ?? '-';

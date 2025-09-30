@@ -26,15 +26,6 @@
                             <input class="form-control" name="judul" type="text" id="judul">
                         </div>
                         <div class="col-12 mb-4">
-                            <label for="kategori_tugas_id">Kategori Tugas</label>
-                            <select id="kategori_tugas_id" name="kategori_tugas_id" class="form-control" required>
-                                <option value="" disabled selected>- Pilih -</option>
-                                @foreach ($kategori as $item)
-                                    <option value="{{ $item->id }}">{{ $item->kategori }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-12 mb-4">
                             <label for="keterangan">Keterangan</label>
                             <textarea rows="4" class="form-control" name="keterangan" id="keterangan"></textarea>
                         </div>

@@ -19,7 +19,6 @@
                             <th>No</th>
                             <th>Tanggal</th>
                             <th>Nama Tugas</th>
-                            <th>Kategori Tugas</th>
                             <th>Guru</th>
                             <th>Jam</th>
                             <th>Status</th>
@@ -54,12 +53,6 @@
             {
                 data: 'judul',
                 name: 'judul',
-                orderable: true,
-                searchable: true
-            },
-            {
-                data: 'kategori',
-                name: 'kategori',
                 orderable: true,
                 searchable: true
             },

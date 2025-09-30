@@ -64,6 +64,13 @@
                                 </li>
                             </ul>
                         </li>
+                        <li
+                            class="sidebar-item {{ request()->is('admin/nilai*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.nilai.index') }}" class='sidebar-link'>
+                                <i class="bi bi-card-checklist"></i>
+                                <span>Nilai Siswa</span>
+                            </a>
+                        </li>
                         <li class="sidebar-title">Kelola</li>
                         <li
                             class="sidebar-item {{ request()->is('admin/jadwal*') ? 'active' : '' }}">

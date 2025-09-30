@@ -19,7 +19,7 @@ class JadwalFactory extends Factory
     {
         return [
             'nama_jadwal' => 'jadwal'. $this->faker->randomNumber(2),
-            'tanggal' => $this->faker->dateTimeBetween('now', '+1 week')->format('Y-m-d'),
+            'tanggal' => $this->faker->dateTimeBetween('2025-01-01', 'now')->format('Y-m-d'),
             'jam_mulai' => $this->faker->dateTimeBetween('08:00:00', '12:00:00'),
             'jam_selesai' => $this->faker->dateTimeBetween('13:00:00', '17:00:00'),
             'guru_id' => Guru::pluck('id')->random(),

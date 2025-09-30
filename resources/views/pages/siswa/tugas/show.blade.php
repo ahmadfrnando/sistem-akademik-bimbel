@@ -21,6 +21,7 @@
             <form id="formSoal" method="POST" action="{{ route('siswa.jawaban-pg.store') }}">
                 @csrf
                 <input type="hidden" name="siswa_id" value="{{ $siswa_id }}">
+                <input type="hidden" name="tugas_id" value="{{ $data->id }}">
 
                 @foreach($data->pertanyaan as $p)
                 <div class="mb-4">

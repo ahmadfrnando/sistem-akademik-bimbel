@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Siswa;
 
 use App\Http\Controllers\Controller;
 use App\Models\JawabanPilihanGandaSiswa;
+use App\Models\Nilai;
 use App\Models\OpsiPertanyaan;
+use App\Models\Tugas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -34,6 +36,7 @@ class JawabanPilihanGandaSiswaController extends Controller
         $validated = $request->validate([
             'siswa_id' => 'required|integer',
             'jawaban'  => 'required|array',
+            'tugas_id' => 'required|integer',
         ]);
 
         DB::beginTransaction();
@@ -49,6 +52,20 @@ class JawabanPilihanGandaSiswaController extends Controller
                     'nilai'             => $opsi->is_correct ? $opsi->pertanyaan->bobot : 0,
                 ]);
             }
+
+            // $jawaban = JawabanPilihanGandaSiswa::where(['pertanyaan_id' => , 'siswa_id'=> $validated['siswa_id']])->get();
+            $tugas = Tugas::findOrFail($validated['tugas_id']);
+            $total_bobot = $tugas->pertanyaan->sum('bobot');
+            $total_skor =$tugas->jawabanPilihanGandaSiswa->sum('nilai');
+
+            Nilai::create([
+                'siswa_id' => $validated['siswa_id'],
+                'tugas_id' => $validated['tugas_id'],
+                'guru_id' => $tugas->guru_id,
+                'total_bobot' => $total_bobot,
+                'total_skor' => $total_skor,
+                'nilai' => ($total_skor / $total_bobot) * 100
+            ]);
 
             DB::commit();
             return response()->json([

@@ -34,7 +34,7 @@ class TugasController extends Controller
     {
         // dd(now());
         if ($request->ajax()) {
-            $data = $this->tugas->select('*');
+            $data = $this->tugas->orderBy('created_at', 'desc')->select('*');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('jam', function ($row) {
@@ -45,9 +45,6 @@ class TugasController extends Controller
                 ->addColumn('tanggal', function ($row) {
                     return $row->jadwal->tanggal ?? '-';
                 })
-                ->addColumn('kategori', function ($row) {
-                    return $row->kategori_tugas->kategori ?? '-';
-                })
                 ->addColumn('total_jawaban', function ($row) {
                     return $row->tugas ? $row->tugas->nilai->count() : 0;
                 })
@@ -57,12 +54,15 @@ class TugasController extends Controller
                 })
                 ->addColumn('action', 'pages.guru.tugas._action')
                 ->rawColumns(['action', 'status', 'jam', 'kategori', 'total_jawaban'])
+                ->filterColumn('tanggal', function ($query, $value) {
+                    $query->whereHas('jadwal', function ($q) use ($value) {
+                        $q->where('tanggal', 'LIKE', '%' . $value . '%');
+                    });
+                })
                 ->make(true);
         }
-        $kategori = RefKategoriTugas::all();
         return view('pages.guru.tugas.index', [
             'guru_id' => $this->dataUser->id,
-            'kategori' => $kategori
         ]);
     }
     /**
@@ -122,26 +122,17 @@ class TugasController extends Controller
                 })
                 ->make(true);
         }
-        $kategori = RefKategoriTugas::all();
         return view('pages.guru.tugas.index', [
             'guru_id' => $this->dataUser->id,
-            'kategori' => $kategori
         ]);
     }
 
     public function show(string $id)
     {
         $data = $this->tugas->with('jadwal')->findOrFail($id);
-        $kategori = $data->kategori_tugas->id;
-        if ($kategori == 1) {
-            return view('pages.guru.tugas.pilihan-ganda.show', [
-                'data' => $data
-            ]);
-        } else {
-            return view('pages.guru.tugas.essay.show', [
-                'data' => $data
-            ]);
-        }
+        return view('pages.guru.tugas.show', [
+            'data' => $data
+        ]);
     }
 
     /**
@@ -226,25 +217,25 @@ class TugasController extends Controller
         }
     }
 
-    public function importEssay(Request $request)
-    {
-        try {
-            // dd($request);
-            $id = $request->tugas_id;
-            $file = $request->file('file');
-            Excel::import(new PertanyaanEssayImport($id), $file);
+    // public function importEssay(Request $request)
+    // {
+    //     try {
+    //         // dd($request);
+    //         $id = $request->tugas_id;
+    //         $file = $request->file('file');
+    //         Excel::import(new PertanyaanEssayImport($id), $file);
 
-            return Response()->json([
-                'success' => true,
-                'message' => 'Tugas berhasil diimport!'
-            ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => $th->getMessage(),
-            ], 500);
-        }
-    }
+    //         return Response()->json([
+    //             'success' => true,
+    //             'message' => 'Tugas berhasil diimport!'
+    //         ], 200);
+    //     } catch (\Throwable $th) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => $th->getMessage(),
+    //         ], 500);
+    //     }
+    // }
 
     public function template()
     {
