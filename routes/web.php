@@ -24,6 +24,7 @@ use App\Http\Controllers\Guru\TugasController as GuruTugasController;
 use App\Http\Controllers\Guru\PertanyaanController as GuruPertanyaanController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Guru\UserController as GuruUserController;
+use App\Http\Controllers\Siswa\UserController as SiswaUserController;
 use App\Http\Controllers\Siswa\JawabanPilihanGandaSiswaController;
 use App\Http\Controllers\Siswa\TugasController;
 use App\Http\Controllers\Siswa\TugasController as SiswaTugasController;
@@ -110,6 +111,12 @@ Route::middleware(['auth', 'role:2'])->name('guru.')->prefix('guru')->group(func
 });
 Route::middleware(['auth', 'role:3'])->name('siswa.')->prefix('siswa')->group(function () {
     Route::get('/dashboard', [SiswaDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/user/edit-username', [SiswaUserController::class, 'editUsername'])->name('user.edit-username');
+    Route::put('/user/update-username', [SiswaUserController::class, 'updateUsername'])->name('user.update-username');
+    Route::get('/user/edit-password', [SiswaUserController::class, 'editPassword'])->name('user.edit-password');
+    Route::put('/user/update-password', [SiswaUserController::class, 'updatePassword'])->name('user.update-password');
+
+    // tugas
     Route::get('/tugas', [SiswaTugasController::class, 'index'])->name('tugas.index');
     Route::get('/tugas/{tugas}/show', [SiswaTugasController::class, 'show'])->name('tugas.show');
     // jawaban

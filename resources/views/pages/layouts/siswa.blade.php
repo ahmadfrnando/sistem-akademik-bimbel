@@ -60,15 +60,15 @@
                         </li>
                         <li class="sidebar-title">Akun</li>
                         <li
-                            class="sidebar-item {{ request()->is('guru/user/edit-username') ? 'active' : '' }}">
-                            <a href="{{ route('guru.user.edit-username') }}" class='sidebar-link'>
+                            class="sidebar-item {{ request()->is('siswa/user/edit-username') ? 'active' : '' }}">
+                            <a href="{{ route('siswa.user.edit-username') }}" class='sidebar-link'>
                                 <i class="bi bi-gear-fill"></i>
                                 <span>Ganti Username</span>
                             </a>
                         </li>
                         <li
-                            class="sidebar-item {{ request()->is('guru/user/edit-password') ? 'active' : '' }}">
-                            <a href="{{ route('guru.user.edit-password') }}" class='sidebar-link'>
+                            class="sidebar-item {{ request()->is('siswa/user/edit-password') ? 'active' : '' }}">
+                            <a href="{{ route('siswa.user.edit-password') }}" class='sidebar-link'>
                                 <i class="bi bi-gear-fill"></i>
                                 <span>Ganti Password</span>
                             </a>
