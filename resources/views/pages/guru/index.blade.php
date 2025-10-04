@@ -133,7 +133,7 @@
                                             </div>
                                         </td>
                                         <td class="col-auto">
-                                            <a href="{{ route('guru.pembelajaran.show', $p->id) }}" class="btn btn-warning btn-sm"><i class="bi bi-eye"></i> Lihat</a>
+                                            <a href="javascript:void(0)" onClick="showFunc('{{ $p->file }}')" class="btn btn-lihat btn-warning btn-sm"><i class="bi bi-file-earmark-check me-1"></i>Lihat Materi</a>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -145,7 +145,7 @@
                                             </div>
                                         </td>
                                         <td class="col-auto">
-                                            <a href="{{ route('guru.tugas.show', $t->id) }}" class="btn btn-warning btn-sm"><i class="bi bi-eye"></i> Lihat</a>
+                                            <a href="{{ route('guru.tugas.show', $t->id) }}" class="btn btn-warning btn-sm"><i class="bi bi-eye"></i> Lihat Tugas</a>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -187,5 +187,18 @@
             </div>
         </div>
     </div>
+    @include('pages.guru._show_pembelajaran')
 </section>
+@push('scripts')
+<script type="text/javascript">
+    function showFunc(fileParams) {
+        $('#modalShow').modal('show');
+        var file = fileParams;
+        $('#modalShowFile').find('.modal-title').html('Lihat Lampiran');
+        let url = "{{ asset('storage') }}/" + file;
+        $('#showFile').attr('data', url);
+        $('#modalShowFile').modal('show');
+    }
+</script>
+@endpush
 @endsection

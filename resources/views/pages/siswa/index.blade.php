@@ -5,7 +5,7 @@
 
 @section('content')
 <section class="row">
-    <div class="col-12 col-lg-9">
+    <div class="col-12">
         <div class="row">
             <div class="col-6 col-lg-3 col-md-6">
                 <div class="card">
@@ -13,12 +13,12 @@
                         <div class="row">
                             <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
                                 <div class="stats-icon purple mb-2">
-                                    <i class="iconly-boldShow"></i>
+                                    <i class="iconly-boldTick-Square"></i>
                                 </div>
                             </div>
                             <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                <h6 class="text-muted font-semibold">Profile Views</h6>
-                                <h6 class="font-extrabold mb-0">112.000</h6>
+                                <h6 class="text-muted font-semibold">Tugas Selesai</h6>
+                                <h6 class="font-extrabold mb-0">{{ $statsOverview['tugas_selesai'] }}</h6>
                             </div>
                         </div>
                     </div>
@@ -30,12 +30,12 @@
                         <div class="row">
                             <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
                                 <div class="stats-icon blue mb-2">
-                                    <i class="iconly-boldProfile"></i>
+                                    <i class="iconly-boldTime-Circle"></i>
                                 </div>
                             </div>
                             <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                <h6 class="text-muted font-semibold">Followers</h6>
-                                <h6 class="font-extrabold mb-0">183.000</h6>
+                                <h6 class="text-muted font-semibold">Tugas Berjalan</h6>
+                                <h6 class="font-extrabold mb-0">{{ $statsOverview['tugas_belum_selesai'] }}</h6>
                             </div>
                         </div>
                     </div>
@@ -47,12 +47,12 @@
                         <div class="row">
                             <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
                                 <div class="stats-icon green mb-2">
-                                    <i class="iconly-boldAdd-User"></i>
+                                    <i class="iconly-boldPaper"></i>
                                 </div>
                             </div>
                             <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                <h6 class="text-muted font-semibold">Following</h6>
-                                <h6 class="font-extrabold mb-0">80.000</h6>
+                                <h6 class="text-muted font-semibold">Pembelajaran Aktif</h6>
+                                <h6 class="font-extrabold mb-0">{{ $statsOverview['pembelajaran_aktif'] }}</h6>
                             </div>
                         </div>
                     </div>
@@ -64,136 +64,76 @@
                         <div class="row">
                             <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
                                 <div class="stats-icon red mb-2">
-                                    <i class="iconly-boldBookmark"></i>
+                                    <i class="iconly-boldStar"></i>
                                 </div>
                             </div>
                             <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                <h6 class="text-muted font-semibold">Saved Post</h6>
-                                <h6 class="font-extrabold mb-0">112</h6>
+                                <h6 class="text-muted font-semibold">Nilai Tertinggi
+                                    <button type="button" data-bs-toggle="tooltip" data-bs-placement="top"
+                                        title="Semester Berjalan" style="border: none!important; background: none!important; padding: 0!important; cursor: pointer!important;">
+                                        <i class="bi bi-info-circle ms-2"></i>
+                                    </button>
+                                </h6>
+                                <h6 class="font-extrabold mb-0">{{ $statsOverview['nilai_tertinggi'] }}</h6>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
+            <div class="col-6 col-lg-3 col-md-6">
                 <div class="card">
-                    <div class="card-header">
-                        <h4>Profile Visit</h4>
-                    </div>
-                    <div class="card-body">
-                        <div id="chart-profile-visit"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 col-xl-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Profile Visit</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-7">
-                                <div class="d-flex align-items-center">
-                                    <svg class="bi text-primary" width="32" height="32" fill="blue"
-                                        style="width:10px">
-                                        <use
-                                            xlink:href="assets/static/images/bootstrap-icons.svg#circle-fill" />
-                                    </svg>
-                                    <h5 class="mb-0 ms-3">Europe</h5>
-                                </div>
+                    <div class="card-body py-4 px-4">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-xl">
+                                <img src="/assets/compiled/jpg/1.jpg" alt="Face 1">
                             </div>
-                            <div class="col-5">
-                                <h5 class="mb-0 text-end">862</h5>
-                            </div>
-                            <div class="col-12">
-                                <div id="chart-europe"></div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-7">
-                                <div class="d-flex align-items-center">
-                                    <svg class="bi text-success" width="32" height="32" fill="blue"
-                                        style="width:10px">
-                                        <use
-                                            xlink:href="assets/static/images/bootstrap-icons.svg#circle-fill" />
-                                    </svg>
-                                    <h5 class="mb-0 ms-3">America</h5>
-                                </div>
-                            </div>
-                            <div class="col-5">
-                                <h5 class="mb-0 text-end">375</h5>
-                            </div>
-                            <div class="col-12">
-                                <div id="chart-america"></div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-7">
-                                <div class="d-flex align-items-center">
-                                    <svg class="bi text-danger" width="32" height="32" fill="blue"
-                                        style="width:10px">
-                                        <use
-                                            xlink:href="assets/static/images/bootstrap-icons.svg#circle-fill" />
-                                    </svg>
-                                    <h5 class="mb-0 ms-3">Indonesia</h5>
-                                </div>
-                            </div>
-                            <div class="col-5">
-                                <h5 class="mb-0 text-end">1025</h5>
-                            </div>
-                            <div class="col-12">
-                                <div id="chart-indonesia"></div>
+                            <div class="ms-3 name">
+                                <h5 class="font-bold">{{ $statsOverview['profile_siswa']->nama ?? '-' }}</h5>
+                                <h6 class="text-muted mb-0">{{ $statsOverview['profile_siswa']->user->username ?? '-' }}</h6>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-xl-8">
+            <div class="col-12 col-lg-9 col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Latest Comments</h4>
+                        <h4>Daftar Tugas Aktif</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-hover table-lg">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Comment</th>
+                                        <th>Judul</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach ($tableTugas as $tugas)
                                     <tr>
                                         <td class="col-3">
                                             <div class="d-flex align-items-center">
-                                                <div class="avatar avatar-md">
-                                                    <img src="/assets/compiled/jpg/5.jpg">
-                                                </div>
-                                                <p class="font-bold ms-3 mb-0">Si Cantik</p>
+                                                <p class="font-bold mb-0">{{ $tugas->judul }}</p>
                                             </div>
                                         </td>
                                         <td class="col-auto">
-                                            <p class=" mb-0">Congratulations on your graduation!</p>
+                                            <a href="{{ route('siswa.tugas.show', $tugas->id) }}" class="btn btn-warning btn-sm"><i class="bi bi-eye"></i> Kerjakan </a>
                                         </td>
                                     </tr>
+                                    @endforeach
+                                    @foreach ($tablePembelajaran as $pembelajaran)
                                     <tr>
                                         <td class="col-3">
                                             <div class="d-flex align-items-center">
-                                                <div class="avatar avatar-md">
-                                                    <img src="/assets/compiled/jpg/2.jpg">
-                                                </div>
-                                                <p class="font-bold ms-3 mb-0">Si Ganteng</p>
+                                                <p class="font-bold mb-0">{{ $pembelajaran->judul }}</p>
                                             </div>
                                         </td>
                                         <td class="col-auto">
-                                            <p class=" mb-0">Wow amazing design! Can you make another tutorial for
-                                                this design?</p>
+                                            <a href="javascript:void(0)" onClick="showFunc('{{ $pembelajaran->file }}')" class="btn btn-lihat btn-primary btn-sm"><i class="bi bi-file-earmark-check me-1"></i>Lihat</a>
                                         </td>
                                     </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -202,65 +142,27 @@
             </div>
         </div>
     </div>
-    <div class="col-12 col-lg-3">
-        <div class="card">
-            <div class="card-body py-4 px-4">
-                <div class="d-flex align-items-center">
-                    <div class="avatar avatar-xl">
-                        <img src="/assets/compiled/jpg/1.jpg" alt="Face 1">
-                    </div>
-                    <div class="ms-3 name">
-                        <h5 class="font-bold">John Duck</h5>
-                        <h6 class="text-muted mb-0">@johnducky</h6>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header">
-                <h4>Recent Messages</h4>
-            </div>
-            <div class="card-content pb-4">
-                <div class="recent-message d-flex px-4 py-3">
-                    <div class="avatar avatar-lg">
-                        <img src="/assets/compiled/jpg/4.jpg">
-                    </div>
-                    <div class="name ms-4">
-                        <h5 class="mb-1">Hank Schrader</h5>
-                        <h6 class="text-muted mb-0">@johnducky</h6>
-                    </div>
-                </div>
-                <div class="recent-message d-flex px-4 py-3">
-                    <div class="avatar avatar-lg">
-                        <img src="/assets/compiled/jpg/5.jpg">
-                    </div>
-                    <div class="name ms-4">
-                        <h5 class="mb-1">Dean Winchester</h5>
-                        <h6 class="text-muted mb-0">@imdean</h6>
-                    </div>
-                </div>
-                <div class="recent-message d-flex px-4 py-3">
-                    <div class="avatar avatar-lg">
-                        <img src="/assets/compiled/jpg/1.jpg">
-                    </div>
-                    <div class="name ms-4">
-                        <h5 class="mb-1">John Dodol</h5>
-                        <h6 class="text-muted mb-0">@dodoljohn</h6>
-                    </div>
-                </div>
-                <div class="px-4">
-                    <button class='btn btn-block btn-xl btn-outline-primary font-bold mt-3'>Start Conversation</button>
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header">
-                <h4>Visitors Profile</h4>
-            </div>
-            <div class="card-body">
-                <div id="chart-visitors-profile"></div>
-            </div>
-        </div>
-    </div>
+    @include('pages.siswa._show_pembelajaran')
 </section>
+@push('scripts')
+<script type="text/javascript">
+    // If you want to use tooltips in your project, we suggest initializing them globally
+    // instead of a "per-page" level.
+    document.addEventListener('DOMContentLoaded', function() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    }, false);
+
+    function showFunc(fileParams) {
+        $('#modalShow').modal('show');
+        var file = fileParams;
+        $('#modalShowFile').find('.modal-title').html('Lihat Lampiran');
+        let url = "{{ asset('storage') }}/" + file;
+        $('#showFile').attr('data', url);
+        $('#modalShowFile').modal('show');
+    }
+</script>
+@endpush
 @endsection

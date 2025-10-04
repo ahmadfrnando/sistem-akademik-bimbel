@@ -57,4 +57,31 @@ class Siswa extends Model
     {
         return $this->hasMany(Nilai::class);
     }
+
+    public function tugasSelesai()
+    {
+        return $this->belongsToMany(Tugas::class, 'nilai', 'siswa_id', 'tugas_id')
+            ->withPivot('nilai', 'created_at')
+            ->wherePivotNotNull('nilai');
+    }
+
+    public function tugasBelumSelesai()
+    {   
+        $id = $this->id;
+        return Tugas::whereDoesntHave('nilai', function ($query) use ($id) {
+            $query->where('siswa_id', $id);
+        })
+        ->whereHas('jadwal', function ($query) {
+            $query->where('tanggal', '>=', date('Y-m-d'))
+            ->where('jam_selesai', '<=', date('H:i:s'));
+        });
+    }
+
+    public function pembelajaranAktif()
+    {
+        return Pembelajaran::whereHas('jadwal', function ($query) {
+            $query->where('tanggal', '>=', date('Y-m-d'))
+                ->where('jam_selesai', '>=', date('H:i:s'));
+        });
+    }
 }

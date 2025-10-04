@@ -28,6 +28,8 @@ use App\Http\Controllers\Siswa\JawabanPilihanGandaSiswaController;
 use App\Http\Controllers\Siswa\TugasController;
 use App\Http\Controllers\Siswa\TugasController as SiswaTugasController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Siswa\PembelajaranController as SiswaPembelajaranController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -112,6 +114,9 @@ Route::middleware(['auth', 'role:3'])->name('siswa.')->prefix('siswa')->group(fu
     Route::get('/tugas/{tugas}/show', [SiswaTugasController::class, 'show'])->name('tugas.show');
     // jawaban
     Route::post('/jawaban-pg/store', [JawabanPilihanGandaSiswaController::class, 'store'])->name('jawaban-pg.store');
+
+    //pembelajaran
+    Route::resource('/pembelajaran', SiswaPembelajaranController::class);
 });
 Route::middleware(['auth', 'role:4'])->name('kepsek.')->prefix('kepsek')->group(function () {
     Route::get('/dashboard', [KepsekDashboardController::class, 'index'])->name('dashboard');

@@ -138,4 +138,10 @@ Breadcrumbs::for('siswa.tugas.show-materi', function (BreadcrumbTrail $trail) {
     $trail->push('Detail Materi', route('siswa.tugas.show-materi', 'materi_id'));
 });
 
+// siswa > pembelajaran
+Breadcrumbs::for('siswa.pembelajaran.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('siswa.dashboard');
+    $trail->push('Daftar Pembelajaran', route('siswa.pembelajaran.index'));
+});
+
 // end siswa

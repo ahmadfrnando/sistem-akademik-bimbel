@@ -11,9 +11,31 @@ class DashboardController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    protected $dataUser;
+    protected $tugas;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->dataUser = Pengguna::getUserSiswa();
+            return $next($request);
+        });
+    }
+    
     public function index()
-    {   
-        return view('pages.siswa.index');
+    {
+        $statsOverview = [
+            'tugas_selesai' => $this->dataUser->tugasSelesai()->count(),
+            'tugas_belum_selesai' => $this->dataUser->tugasBelumSelesai()->count(),
+            'pembelajaran_aktif' => $this->dataUser->pembelajaranAktif()->count(),
+            'nilai_tertinggi' => $this->dataUser->nilai()->max('nilai'),
+            'profile_siswa' => $this->dataUser,
+        ];
+
+        $tableTugas = $this->dataUser->tugasBelumSelesai()->with('pembelajaran')->get();
+        $tablePembelajaran = $this->dataUser->pembelajaranAktif()->with('jadwal')->get();
+        return view('pages.siswa.index', compact('statsOverview', 'tableTugas', 'tablePembelajaran'));
     }
 
     /**

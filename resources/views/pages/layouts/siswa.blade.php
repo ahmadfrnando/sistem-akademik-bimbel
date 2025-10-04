@@ -43,7 +43,14 @@
                                 <span>Dashboard</span>
                             </a>
                         </li>
-                        <li class="sidebar-title">Materi Pembelajaran</li>
+                        <li class="sidebar-title">Materi</li>
+                        <li
+                            class="sidebar-item {{ request()->is('siswa/pembelajaran*') ? 'active' : '' }}">
+                            <a href="{{ route('siswa.pembelajaran.index') }}" class='sidebar-link'>
+                                <i class="bi bi-file-earmark-text-fill"></i>
+                                <span>Materi Pembelajaran</span>
+                            </a>
+                        </li>
                         <li
                             class="sidebar-item {{ request()->is('siswa/tugas*') ? 'active' : '' }}">
                             <a href="{{ route('siswa.tugas.index') }}" class='sidebar-link'>
