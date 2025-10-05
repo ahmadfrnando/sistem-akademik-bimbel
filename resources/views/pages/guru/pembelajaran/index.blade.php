@@ -242,7 +242,7 @@
             error: function(data) {
                 $("#btn-save").prop('disabled', false);
                 $("#btn-save").html('Simpan');
-                showToast('error', 'Data gagal disimpan' + data.responseJSON.message);
+                showToast('error', 'Data gagal disimpan. ' + data.responseJSON.message);
                 console.log(data);
             },
         });

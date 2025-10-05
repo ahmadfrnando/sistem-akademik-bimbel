@@ -67,15 +67,15 @@ class PembelajaranController extends Controller
      */
     public function store(Request $request)
     {   
+        $dataId = $request->id;
+        $request->validate([
+            'jadwal_id' => 'required|exists:jadwal,id',
+            'judul' => 'required|string',
+            'file' => 'nullable|mimes:pdf|max:10240',
+            'guru_id' => 'required|exists:guru,id',
+            'keterangan' => 'nullable|string'
+        ]);
         try {
-            $dataId = $request->id;
-            $request->validate([
-                'jadwal_id' => 'required|exists:jadwal,id',
-                'judul' => 'required|string',
-                'file' => 'nullable|mimes:pdf|max:2048',
-                'guru_id' => 'required|exists:guru,id',
-                'keterangan' => 'nullable|string'
-            ]);
 
             if ($request->hasFile('file')) {
                 $file = $request->file('file');
