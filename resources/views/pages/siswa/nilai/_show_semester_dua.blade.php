@@ -1,7 +1,7 @@
 <div class="table-responsive">
     <table class="table table-bordered mb-0">
         <thead>
-            <tr class="text-center bg-primary">
+            <tr class="text-center">
                 <th>Bulan</th>
                 <th>Nilai Rata - Rata</th>
             </tr>

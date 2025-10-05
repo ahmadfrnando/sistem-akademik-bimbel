@@ -103,39 +103,37 @@
 
     <!-- Tabel Data Siswa -->
     <div class="table-container">
-        <table>
+        <table class="">
             <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Nama Siswa</th>
-                    @for($bulan = 1; $bulan <= 6; $bulan++)
-                        <th>Nilai {{ $bulan == 1 ? 'Januari' : ( $bulan == 2 ? 'Februari' : ( $bulan == 3 ? 'Maret' : ( $bulan == 4 ? 'April' : ( $bulan == 5 ? 'Mei' : ( $bulan == 6 ? 'Juni' : '' ) ) ) ) ) }}</th>
-                        @endfor
+                <tr class="text-center">
+                    <th>Bulan</th>
+                    <th>Nilai Rata - Rata</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($siswa as $s)
-                <tr>
-                    <th> {{ $loop->iteration }} </th>
-                    <th> {{ $s->nama }} </th>
-                    @for($bulan = 1; $bulan <= 6; $bulan++)
-                        @php
-                        $nilaiBulan=$s->nilai->filter(function($nilai) use ($bulan) {
-                        return optional($nilai->tugas->jadwal)->tanggal &&
-                        \Carbon\Carbon::parse($nilai->tugas->jadwal->tanggal)->month == $bulan;
-                        });
+                @for($bulan = 1; $bulan <= 6; $bulan++)
+                    @php
+                    // Ambil nilai untuk bulan ke-X
+                    $nilaiBulan=$siswa->nilai->filter(function($nilai) use ($bulan) {
+                    return optional($nilai->tugas->jadwal)->tanggal &&
+                    \Carbon\Carbon::parse($nilai->tugas->jadwal->tanggal)->month == $bulan;
+                    });
 
-                        $rata2 = $nilaiBulan->count() > 0
-                        ? number_format((float)$nilaiBulan->avg('nilai'), 2, '.', '.')
-                        : '-';
-                        @endphp
-                        <td>{{ $rata2 }}</td>
-                        @endfor
-                </tr>
-                @endforeach
+                    $rata2 = $nilaiBulan->count() > 0
+                    ? number_format($nilaiBulan->avg('nilai'), 2, '.', '.')
+                    : '-';
+                    @endphp
+                    <tr>
+                        <td>
+                            {{ \Carbon\Carbon::create()->month($bulan)->translatedFormat('F') }}
+                        </td>
+                        <td class="text-center">{{ $rata2 }}</td>
+                    </tr>
+                    @endfor
             </tbody>
         </table>
     </div>
+
 
     <!-- Note -->
     <div class="note">
