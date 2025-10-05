@@ -101,6 +101,20 @@
         <p>Jl. Kapten Muslim Gang Kesehatan No. 13 Medan</p>
     </div>
 
+    <!-- Header Laporan -->
+    <div style="text-align: center; margin-bottom: 20px;">
+        <h2 style="margin: 0; padding: 0;">LAPORAN NILAI SEMESTER 2</h2>
+        <p style="margin: 5px 0 0 0;">Tahun Ajaran {{ date('Y') }}/{{ date('Y') + 1 }}</p>
+    </div>
+
+    <!-- Informasi Siswa -->
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 14px;">
+        <tr>
+            <td style="width: 25%; font-weight: bold;">Nama Siswa</td>
+            <td style="width: 75%;">: {{ $siswa->nama }}</td>
+        </tr>
+    </table>
+
     <!-- Tabel Data Siswa -->
     <div class="table-container">
         <table class="">
