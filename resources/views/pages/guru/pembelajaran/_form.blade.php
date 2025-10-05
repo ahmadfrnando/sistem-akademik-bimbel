@@ -28,7 +28,7 @@
                         </div>
                         <div class="col-12 mb-3">
                             <label for="file" class="form-label">File</label>
-                            <small class="text-muted"><i>pdf maksimal 2MB</i></small>
+                            <small class="text-muted"><i>pdf maksimal 10MB</i></small>
                             <input class="form-control" name="file" type="file" id="file">
                         </div>
                         <div class="col-12 mb-4">
