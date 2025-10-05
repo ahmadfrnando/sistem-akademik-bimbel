@@ -33,7 +33,7 @@ class DashboardController extends Controller
             'profile_siswa' => $this->dataUser,
         ];
 
-        $tableTugas = $this->dataUser->tugasBelumSelesai()->with('pembelajaran')->get();
+        $tableTugas = $this->dataUser->tugasBelumSelesai()->get();
         $tablePembelajaran = $this->dataUser->pembelajaranAktif()->with('jadwal')->get();
         return view('pages.siswa.index', compact('statsOverview', 'tableTugas', 'tablePembelajaran'));
     }
