@@ -144,16 +144,22 @@ Breadcrumbs::for('siswa.pembelajaran.index', function (BreadcrumbTrail $trail) {
     $trail->push('Daftar Pembelajaran', route('siswa.pembelajaran.index'));
 });
 
-// guru > akun
+// siswa > akun
 Breadcrumbs::for('siswa.user.edit-username', function (BreadcrumbTrail $trail) {
     $trail->parent('siswa.dashboard');
     $trail->push('Update Username', route('siswa.user.edit-username'));
 });
 
-// guru > akun
+// siswa > akun
 Breadcrumbs::for('siswa.user.edit-password', function (BreadcrumbTrail $trail) {
     $trail->parent('siswa.dashboard');
     $trail->push('Update Password', route('siswa.user.edit-password'));
+});
+
+// siswa > nilai
+Breadcrumbs::for('siswa.nilai.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('siswa.dashboard');
+    $trail->push('Daftar Nilai', route('siswa.nilai.index'));
 });
 
 // end siswa

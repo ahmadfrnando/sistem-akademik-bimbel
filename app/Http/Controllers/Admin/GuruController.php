@@ -17,7 +17,7 @@ class GuruController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Guru::with('mapel', 'user')->select('*');
+            $data = Guru::with('user')->select('*');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('user_id', function ($row) {

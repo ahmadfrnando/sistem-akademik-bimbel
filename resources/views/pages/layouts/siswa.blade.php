@@ -42,6 +42,13 @@
                                 <span>Dashboard</span>
                             </a>
                         </li>
+                        <li
+                            class="sidebar-item {{ request()->is('siswa/nilai*') ? 'active' : '' }}">
+                            <a href="{{ route('siswa.nilai.index') }}" class='sidebar-link'>
+                                <i class="bi bi-file-earmark-text-fill"></i>
+                                <span>Nilai</span>
+                            </a>
+                        </li>
                         <li class="sidebar-title">Materi</li>
                         <li
                             class="sidebar-item {{ request()->is('siswa/pembelajaran*') ? 'active' : '' }}">
