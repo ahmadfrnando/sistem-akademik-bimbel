@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SiswaRequest;
 use App\Models\RefKelas;
 use App\Models\Siswa;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -17,7 +18,7 @@ class SiswaController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Siswa::with('kelas', 'user')->select('*');
+            $data = Siswa::with('user')->select('*');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('user_id', function ($row) {
@@ -31,11 +32,11 @@ class SiswaController extends Controller
                     data-bs-target="#modalUpdateAkunForm" class="me-2 btn btn-secondary btn-sm" data-id="' . $row->id . '"><i class="bi bi-person-check"></i></button>';
                     $btn .= '<button type="button" data-id="' . $row->user_id . '" id="updatePassword" data-bs-toggle="modal"
                     data-bs-target="#modalUpdatePasswordForm" class="me-2 btn btn-primary btn-sm" data-id="' . $row->id . '"><i class="bi bi-key"></i></button>';
-                    
-                    return 
-                    '<div class="d-flex align-items-center">'.
-                    $btn .
-                    '</div>';
+
+                    return
+                        '<div class="d-flex align-items-center">' .
+                        $btn .
+                        '</div>';
                 })
                 ->rawColumns(['action'])
                 ->filterColumn('user_id', function ($query, $value) {
@@ -82,7 +83,7 @@ class SiswaController extends Controller
      */
     public function edit(string $id)
     {
-        $siswa = Siswa::with('kelas')->findOrFail($id);
+        $siswa = Siswa::with('user')->findOrFail($id);
 
         return response()->json([
             'success' => true,

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AkunController;
+use App\Http\Controllers\Admin\CetakController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SiswaController;
 use App\Http\Controllers\Admin\GuruController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Guru\SiswaController as GuruSiswaController;
 use App\Http\Controllers\Guru\KelolaPembelajaranController;
 use App\Http\Controllers\Admin\KelolaSiswaKelasController;
+use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Admin\NilaiController;
 use App\Http\Controllers\Admin\PembelajaranController;
 use App\Http\Controllers\Guru\PembelajaranController as GuruPembelajaranController;
@@ -56,6 +58,8 @@ Route::get('/search-guru', [AjaxLoadController::class, 'getGuru'])->name('search
 Route::get('/search-siswa', [AjaxLoadController::class, 'getSiswa'])->name('search.siswa');
 Route::get('/search-jadwal-pembelajaran', [AjaxLoadController::class, 'getJadwalPembelajaran'])->name('search.jadwal.pembelajaran');
 // Route::get('/tests-import', [GuruDashboardController::class, 'import']);
+Route::get('admin/siswa/cetak', [LaporanController::class, 'cetakSiswa'])->name('admin.siswa.cetak');
+Route::get('admin/nilai/cetak/{semester}', [LaporanController::class, 'cetakNilai'])->name('admin.nilai.cetak');
 
 Route::middleware(['auth', 'role:1'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -68,6 +72,7 @@ Route::middleware(['auth', 'role:1'])->name('admin.')->prefix('admin')->group(fu
     Route::get('/pembelajaran', [PembelajaranController::class, 'index'])->name('pembelajaran.index');
 
     Route::resource('/siswa', SiswaController::class);
+    //guru
     Route::resource('/guru', GuruController::class);
     // untuk pengaturan akun admin
     Route::resource('/user', UserController::class);

@@ -61,14 +61,13 @@ class SiswaController extends Controller
      */
     public function show(Request $request, string $id)
     {
-        if ($request->ajax()) {
-            $data = $this->siswa->select('*')->where('kelas_id', $id);
-            return DataTables::of($data)
-                ->addIndexColumn()
-                ->make(true);
-        }
-        $kelas = RefKelas::findOrFail($id);
-        return view('pages.guru.siswa.show', compact('kelas'));
+        // if ($request->ajax()) {
+        //     $data = $this->siswa->select('*')->where('kelas_id', $id);
+        //     return DataTables::of($data)
+        //         ->addIndexColumn()
+        //         ->make(true);
+        // }
+        // return view('pages.guru.siswa.show', compact('kelas'));
     }
 
     /**

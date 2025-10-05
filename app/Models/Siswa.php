@@ -38,11 +38,6 @@ class Siswa extends Model
         });
     }
 
-    public function kelas()
-    {
-        return $this->belongsTo(RefKelas::class);
-    }
-
     public function user()
     {
         return $this->belongsTo(User::class); // Setiap siswa dimiliki oleh satu user

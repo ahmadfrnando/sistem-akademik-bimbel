@@ -26,6 +26,7 @@ class DashboardController extends Controller
             return $next($request);
         });
     }
+    
     public function index()
     {   
         $statsOverview = [

@@ -25,8 +25,20 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="card-title">
-                Daftar Nilai Siswa
+                Semua Nilai Siswa
             </h5>
+            <div>
+                <a href="{{ route('admin.nilai.cetak', 1) }}" target="_blank" rel="noopener noreferrer">
+                    <button type="button" id="create" class="btn btn-add btn-primary block">
+                        <i class="bi bi-printer me-1 fs-5"></i>Cetak Nilai Semester 1
+                    </button>
+                </a>
+                <a href="{{ route('admin.nilai.cetak', 2) }}" target="_blank" rel="noopener noreferrer">
+                    <button type="button" id="create" class="btn btn-add btn-primary block">
+                        <i class="bi bi-printer me-1 fs-5"></i>Cetak Nilai Semester 2
+                    </button>
+                </a>
+            </div>
         </div>
         <div class="card-body">
             <ul class="nav nav-tabs" id="myTab" role="tablist">

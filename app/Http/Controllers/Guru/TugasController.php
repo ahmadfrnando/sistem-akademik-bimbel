@@ -113,8 +113,9 @@ class TugasController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('siswa', function ($row) {
-                    $row->siswa->nama ?? '-';
+                    return $row->siswa->nama ?? '-';
                 })
+                ->rawColumns(['siswa'])
                 ->filterColumn('siswa', function ($query, $value) {
                     $query->whereHas('siswa', function ($q) use ($value) {
                         $q->where('nama', 'LIKE', '%' . $value . '%');

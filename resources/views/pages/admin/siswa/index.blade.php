@@ -10,9 +10,16 @@
             <h5 class="card-title">
                 Semua Siswa
             </h5>
-            <button type="button" id="create" class="btn btn-add btn-warning block" data-bs-toggle="modal" data-bs-target="#modalForm">
-                <i class="bi bi-plus me-1 fs-5"></i>Tambah Siswa
-            </button>
+            <div>
+                <a href="{{ route('admin.siswa.cetak') }}" target="_blank" rel="noopener noreferrer">
+                    <button type="button" id="create" class="btn btn-add btn-primary block">
+                        <i class="bi bi-printer me-1 fs-5"></i>Cetak Data Siswa
+                    </button>
+                </a>
+                <button type="button" id="create" class="btn btn-add btn-warning block" data-bs-toggle="modal" data-bs-target="#modalForm">
+                    <i class="bi bi-plus me-1 fs-5"></i>Tambah Siswa
+                </button>
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
