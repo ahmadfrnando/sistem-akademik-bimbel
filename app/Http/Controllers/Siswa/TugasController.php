@@ -6,6 +6,7 @@ use App\Facades\Pengguna;
 use App\Http\Controllers\Controller;
 use App\Models\RefKategoriTugas;
 use App\Models\Tugas;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -40,18 +41,31 @@ class TugasController extends Controller
                 ->addColumn('guru', function ($row) {
                     return $row->guru->nama ?? '-';
                 })
-                ->addColumn('status', function ($row) {
-                    $row = [
-                        'tanggal' => $row->jadwal->tanggal,
-                        'jam_selesai' => $row->jadwal->jam_selesai
-                    ];
-                    $dateTime = $row['tanggal'] . ' ' . $row['jam_selesai'];
-                    return view('pages.siswa.tugas._status')->with('row', $dateTime)->render();
+               ->addColumn('status', function ($row) {
+                    $start = Carbon::parse(
+                        $row->jadwal->tanggal . ' ' . $row->jadwal->jam_mulai
+                    );
+
+                    $end = Carbon::parse(
+                        $row->jadwal->tanggal . ' ' . $row->jadwal->jam_selesai
+                    );
+
+                    $isActive = now()->between($start, $end);
+
+                    return view('pages.siswa.tugas._status', compact('isActive'))->render();
                 })
                 ->addColumn('action', function ($row) {
+                    $start = Carbon::parse(
+                        $row->jadwal->tanggal . ' ' . $row->jadwal->jam_mulai
+                    );
+
+                    $end = Carbon::parse(
+                        $row->jadwal->tanggal . ' ' . $row->jadwal->jam_selesai
+                    );
+
                     $row = [
                         'id' => $row->id,
-                        'dateTime' => $row->jadwal->tanggal . ' ' . $row->jadwal->jam_selesai
+                        'isActive' => now()->between($start, $end),
                     ];
                     return view('pages.siswa.tugas._action')->with('row', $row)->render();
                 })

@@ -11,6 +11,7 @@ use App\Models\Nilai;
 use App\Models\RefKategoriTugas;
 use App\Models\Siswa;
 use App\Models\Tugas;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Yajra\DataTables\Facades\DataTables;
@@ -49,8 +50,17 @@ class TugasController extends Controller
                     return $row->nilai->count() ?? 0;
                 })
                 ->addColumn('status', function ($row) {
-                    $dateTime = $row->jadwal->tanggal . ' ' . $row->jadwal->jam_selesai;
-                    return view('pages.guru.tugas._status')->with('row', $dateTime)->render();
+                    $start = Carbon::parse(
+                        $row->jadwal->tanggal . ' ' . $row->jadwal->jam_mulai
+                    );
+
+                    $end = Carbon::parse(
+                        $row->jadwal->tanggal . ' ' . $row->jadwal->jam_selesai
+                    );
+
+                    $isActive = now()->between($start, $end);
+
+                    return view('pages.guru.tugas._status', compact('isActive'))->render();
                 })
                 ->addColumn('action', 'pages.guru.tugas._action')
                 ->rawColumns(['action', 'status', 'jam', 'kategori', 'total_jawaban'])
