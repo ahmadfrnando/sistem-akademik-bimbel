@@ -86,8 +86,8 @@
                             </a>
                         </li>
                         <li
-                            class="sidebar-item">
-                            <a href="#" class='sidebar-link'>
+                            class="sidebar-item {{ request()->is('admin/tugas*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.tugas.index') }}" class='sidebar-link'>
                                 <i class="bi bi-pencil-fill"></i>
                                 <span>Tugas</span>
                             </a>

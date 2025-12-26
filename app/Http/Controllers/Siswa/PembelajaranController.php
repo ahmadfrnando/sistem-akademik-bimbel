@@ -45,13 +45,18 @@ class PembelajaranController extends Controller
                 })
                 ->addColumn('status', function ($row) {
                     $row = [
-                        'tanggal' => $row->jadwal->tanggal,
-                        'jam_selesai' => $row->jadwal->jam_selesai
+                        'id' => $row->id,
+                        'dateTime' => $row->jadwal->tanggal . ' ' . $row->jadwal->jam_selesai,
                     ];
                     return view('pages.siswa.pembelajaran._status')->with('row', $row)->render();
                 })
                 ->addColumn('action', function ($row) {
-                    return '<a href="javascript:void(0)" onClick="showFunc(\'' . $row->file . '\')" class="btn btn-lihat btn-primary btn-sm"><i class="bi bi-file-earmark-check me-1"></i>Lihat</a>';
+                     $row = [
+                        'id' => $row->id,
+                        'dateTime' => $row->jadwal->tanggal . ' ' . $row->jadwal->jam_selesai,
+                        'file' => $row->file,
+                    ];
+                    return '<button onClick="showFunc(\'' . $row['file'] . '\')" class="btn btn-lihat btn-primary btn-sm" ' . ($row['dateTime'] <= now() ? 'disabled' : '') . '><i class="bi bi-file-earmark-check me-1"></i>Lihat</button>';
                 })
                 ->rawColumns(['status', 'action'])
                 ->filterColumn('guru', function ($query, $value) {

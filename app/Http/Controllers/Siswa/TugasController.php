@@ -45,9 +45,17 @@ class TugasController extends Controller
                         'tanggal' => $row->jadwal->tanggal,
                         'jam_selesai' => $row->jadwal->jam_selesai
                     ];
-                    return view('pages.siswa.tugas._status')->with('row', $row)->render();
+                    $dateTime = $row['tanggal'] . ' ' . $row['jam_selesai'];
+                    return view('pages.siswa.tugas._status')->with('row', $dateTime)->render();
                 })
-                ->addColumn('action', 'pages.siswa.tugas._action')
+                ->addColumn('action', function ($row) {
+                    $row = [
+                        'id' => $row->id,
+                        'dateTime' => $row->jadwal->tanggal . ' ' . $row->jadwal->jam_selesai
+                    ];
+                    return view('pages.siswa.tugas._action')->with('row', $row)->render();
+                })
+                // ->addColumn('action', 'pages.siswa.tugas._action')
                 ->rawColumns(['status', 'action'])
                 ->filterColumn('guru', function ($query, $value) {
                     $query->whereHas('guru', function ($q) use ($value) {

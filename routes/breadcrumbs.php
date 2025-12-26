@@ -38,6 +38,24 @@ Breadcrumbs::for('admin.pembelajaran.index', function (BreadcrumbTrail $trail) {
     $trail->push('Pembelajaran', route('admin.pembelajaran.index'));
 });
 
+// admin > tugas 
+Breadcrumbs::for('admin.tugas.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.dashboard');
+    $trail->push('Tugas', route('admin.tugas.index'));
+});
+
+// admin > tugas > show 
+Breadcrumbs::for('admin.tugas.show', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin.tugas.index');
+    $trail->push('Detail', route('admin.tugas.show', 'id'));
+});
+
+// admin > tugas > show submissions
+Breadcrumbs::for('admin.tugas.submissions.show', function (BreadcrumbTrail $trail)  {
+    $trail->parent('admin.tugas.index');
+    $trail->push('Detail', route('admin.tugas.submissions.show', ['tugas' => 'tugas_id', 'siswa' => 'siswa_id']));
+});
+
 // admin > akun
 Breadcrumbs::for('admin.user.index', function (BreadcrumbTrail $trail) {
     $trail->parent('admin.dashboard');
@@ -91,7 +109,13 @@ Breadcrumbs::for('guru.tugas.index', function (BreadcrumbTrail $trail) {
 // guru > tugas > show 
 Breadcrumbs::for('guru.tugas.show', function (BreadcrumbTrail $trail) {
     $trail->parent('guru.tugas.index');
-    $trail->push('Input Tugas', route('guru.tugas.show', 'id'));
+    $trail->push('Detail', route('guru.tugas.show', 'id'));
+});
+
+// guru > tugas > show submissions
+Breadcrumbs::for('guru.tugas.submissions.show', function (BreadcrumbTrail $trail)  {
+    $trail->parent('guru.tugas.index');
+    $trail->push('Detail', route('guru.tugas.submissions.show', ['tugas' => 'tugas_id', 'siswa' => 'siswa_id']));
 });
 
 // guru > akun

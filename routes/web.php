@@ -25,6 +25,7 @@ use App\Http\Controllers\Siswa\NilaiController as SiswaNilaiController;
 use App\Http\Controllers\Admin\PembelajaranController;
 use App\Http\Controllers\Guru\PembelajaranController as GuruPembelajaranController;
 use App\Http\Controllers\Guru\TugasController as GuruTugasController;
+use App\Http\Controllers\Admin\TugasController as AdminTugasController;
 use App\Http\Controllers\Guru\PertanyaanController as GuruPertanyaanController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Guru\UserController as GuruUserController;
@@ -84,6 +85,12 @@ Route::middleware(['auth', 'role:1'])->name('admin.')->prefix('admin')->group(fu
     Route::put('/ubah-akun/{id}', [AkunController::class, 'updateAkun'])->name('akun.update');
     Route::put('/ubah-password/{id}', [AkunController::class, 'updatePassword'])->name('password.update');
 
+    // tugas
+    Route::get('/tugas', [AdminTugasController::class, 'index'])->name('tugas.index');
+    Route::get('/tugas/{id}', [AdminTugasController::class, 'show'])->name('tugas.show');
+    Route::get('/tugas/{id}/submissions', [AdminTugasController::class, 'submissions'])->name('tugas.submissions');
+    Route::get('/tugas/{tugas}/submissions/{siswa}/show', [AdminTugasController::class, 'submissionsShow'])->name('tugas.submissions.show');
+
     // kelola nilai
     Route::resource('/nilai', NilaiController::class);
 });
@@ -103,6 +110,7 @@ Route::middleware(['auth', 'role:2'])->name('guru.')->prefix('guru')->group(func
     Route::get('/tugas', [GuruTugasController::class, 'index'])->name('tugas.index');
     Route::get('/tugas/{id}', [GuruTugasController::class, 'show'])->name('tugas.show');
     Route::get('/tugas/{id}/submissions', [GuruTugasController::class, 'submissions'])->name('tugas.submissions');
+    Route::get('/tugas/{tugas}/submissions/{siswa}/show', [GuruTugasController::class, 'submissionsShow'])->name('tugas.submissions.show');
     Route::get('/tugas/edit', [GuruTugasController::class, 'edit'])->name('tugas.edit');
     Route::post('/tugas/store', [GuruTugasController::class, 'store'])->name('tugas.store');
     Route::post('/tugas/destroy', [GuruTugasController::class, 'destroy'])->name('tugas.destroy');

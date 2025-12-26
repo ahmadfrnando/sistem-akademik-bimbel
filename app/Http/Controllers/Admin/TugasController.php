@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Guru;
+namespace App\Http\Controllers\Admin;
 
 use App\Facades\Pengguna;
 use App\Http\Controllers\Controller;
@@ -18,23 +18,10 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class TugasController extends Controller
 {
-    protected $dataUser;
-    protected $tugas;
-
-    // Fungsi __construct untuk inisialisasi variabel
-    public function __construct()
-    {
-        $this->middleware(function ($request, $next) {
-            $this->dataUser = Pengguna::getUserGuru();
-            $this->tugas = Tugas::where('guru_id', $this->dataUser->id);
-            return $next($request);
-        });
-    }
-
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = $this->tugas->orderBy('created_at', 'desc')->select('*');
+            $data = Tugas::orderBy('created_at', 'desc')->select('*');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('jam', function ($row) {
@@ -50,9 +37,9 @@ class TugasController extends Controller
                 })
                 ->addColumn('status', function ($row) {
                     $dateTime = $row->jadwal->tanggal . ' ' . $row->jadwal->jam_selesai;
-                    return view('pages.guru.tugas._status')->with('row', $dateTime)->render();
+                    return view('pages.admin.tugas._status')->with('row', $dateTime)->render();
                 })
-                ->addColumn('action', 'pages.guru.tugas._action')
+                ->addColumn('action', 'pages.admin.tugas._action')
                 ->rawColumns(['action', 'status', 'jam', 'kategori', 'total_jawaban'])
                 ->filterColumn('tanggal', function ($query, $value) {
                     $query->whereHas('jadwal', function ($q) use ($value) {
@@ -61,9 +48,7 @@ class TugasController extends Controller
                 })
                 ->make(true);
         }
-        return view('pages.guru.tugas.index', [
-            'guru_id' => $this->dataUser->id,
-        ]);
+        return view('pages.admin.tugas.index');
     }
     /**
      * Show the form for creating a new resource.
@@ -78,28 +63,7 @@ class TugasController extends Controller
      */
     public function store(TugasRequest $request)
     {
-        try {
-            $dataId = $request->id;
-            $validatedData = $request->validated();
-
-            $data = Tugas::updateOrCreate(
-                [
-                    'id' => $dataId
-                ],
-                $validatedData
-            );
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Data berhasil disimpan!',
-                'data' => $data
-            ]);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => $th->getMessage()
-            ], 500);
-        }
+        //
     }
 
     /**
@@ -107,7 +71,7 @@ class TugasController extends Controller
      */
     public function submissions(Request $request, string $id)
     {
-        $tugas = $this->tugas->where('id', $id)->first();
+        $tugas = Tugas::where('id', $id)->first();
         if ($request->ajax()) {
             $data = Nilai::where('tugas_id', $tugas->id);
             return DataTables::of($data)
@@ -116,7 +80,7 @@ class TugasController extends Controller
                     return $row->siswa->nama ?? '-';
                 })
                ->addColumn('action', function ($row) {
-                    $url = route('guru.tugas.submissions.show', [
+                    $url = route('admin.tugas.submissions.show', [
                         'tugas' => $row->tugas_id,
                         'siswa' => $row->siswa_id,
                     ]);
@@ -139,9 +103,7 @@ class TugasController extends Controller
                 })
                 ->make(true);
         }
-        return view('pages.guru.tugas.index', [
-            'guru_id' => $this->dataUser->id,
-        ]);
+        return view('pages.admin.tugas.index');
     }
     
     public function submissionsShow(Tugas $tugas, Siswa $siswa)
@@ -150,7 +112,7 @@ class TugasController extends Controller
             $query->where('siswa_id', $siswa->id);
         }])->get();
         $nilaiSiswa = Nilai::where('tugas_id', $tugas->id)->where('siswa_id', $siswa->id)->first();
-        return view('pages.guru.tugas.submission-show', [
+        return view('pages.admin.tugas.submission-show', [
             'tugas' => $tugas,
             'siswa' => $siswa,
             'pertanyaan' => $pertanyaan,
@@ -160,8 +122,8 @@ class TugasController extends Controller
 
     public function show(string $id)
     {
-        $data = $this->tugas->with('jadwal')->findOrFail($id);
-        return view('pages.guru.tugas.show', [
+        $data = Tugas::with('jadwal')->findOrFail($id);
+        return view('pages.admin.tugas.show', [
             'data' => $data
         ]);
     }
@@ -171,12 +133,7 @@ class TugasController extends Controller
      */
     public function edit(Request $request)
     {
-        $data = Tugas::with('jadwal')->findOrFail($request->id);
-        return response()->json([
-            'success' => true,
-            'data'    => $data,
-            'jadwal'  => $data->jadwal
-        ]);
+       //
     }
 
     /**
@@ -206,70 +163,5 @@ class TugasController extends Controller
                 'message' => $th->getMessage(),
             ]);
         }
-    }
-
-    public function send(Request $request)
-    {
-        $dataId = $request->id;
-        try {
-            $data = Tugas::findOrFail($dataId)->update([
-                'is_draft' => false
-            ]);
-            return Response()->json([
-                'success' => true,
-                'message' => 'Tugas berhasil dikirim!',
-                'data' => $data
-            ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => $th->getMessage(),
-            ], 500);
-        }
-    }
-
-    public function import(Request $request)
-    {
-        try {
-            // dd($request);
-            $id = $request->tugas_id;
-            $file = $request->file('file');
-            Excel::import(new PertanyaanImport($id), $file);
-
-            return Response()->json([
-                'success' => true,
-                'message' => 'Tugas berhasil diimport!'
-            ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => $th->getMessage(),
-            ], 500);
-        }
-    }
-
-    // public function importEssay(Request $request)
-    // {
-    //     try {
-    //         // dd($request);
-    //         $id = $request->tugas_id;
-    //         $file = $request->file('file');
-    //         Excel::import(new PertanyaanEssayImport($id), $file);
-
-    //         return Response()->json([
-    //             'success' => true,
-    //             'message' => 'Tugas berhasil diimport!'
-    //         ], 200);
-    //     } catch (\Throwable $th) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => $th->getMessage(),
-    //         ], 500);
-    //     }
-    // }
-
-    public function template()
-    {
-        return public_path('template/_template_tugas_pilihan_ganda.xlsx');
     }
 }

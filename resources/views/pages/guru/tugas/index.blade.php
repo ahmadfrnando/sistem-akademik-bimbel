@@ -145,6 +145,12 @@
                     return moment(data).locale('id').format('ll') ?? '-';
                 }
             },
+            {
+                data: 'action',
+                name: 'action',
+                orderable: false,
+                searchable: false
+            },
         ];
         var table = initializeDataTable(selector, route, columns);
     }

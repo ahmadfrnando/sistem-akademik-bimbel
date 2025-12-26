@@ -13,6 +13,10 @@ class JawabanPilihanGandaSiswa extends Model
 
     protected $guarded = ['id'];
 
+    protected $casts = [
+        'is_correct' => 'boolean',
+    ];
+
     public function pertanyaan()
     {
         return $this->belongsTo(Pertanyaan::class);
