@@ -150,6 +150,12 @@ Breadcrumbs::for('siswa.tugas.show', function (BreadcrumbTrail $trail) {
     $trail->push('Daftar Tugas', route('siswa.tugas.show', 'id'));
 });
 
+// siswa > tugas >show submissions
+Breadcrumbs::for('siswa.tugas.show.submissions', function (BreadcrumbTrail $trail) {
+    $trail->parent('siswa.tugas.index');
+    $trail->push('Daftar Tugas', route('siswa.tugas.show.submissions', ['tugas' => 'tugas_id', 'siswa' => 'siswa_id']));
+});
+
 // siswa > tugas > materi
 Breadcrumbs::for('siswa.tugas.list-materi', function (BreadcrumbTrail $trail) {
     $trail->parent('siswa.tugas.index');

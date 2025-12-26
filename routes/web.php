@@ -135,6 +135,7 @@ Route::middleware(['auth', 'role:3'])->name('siswa.')->prefix('siswa')->group(fu
     // tugas
     Route::get('/tugas', [SiswaTugasController::class, 'index'])->name('tugas.index');
     Route::get('/tugas/{tugas}/show', [SiswaTugasController::class, 'show'])->name('tugas.show');
+    Route::get('/tugas/{tugas}/submissions/{siswa}', [SiswaTugasController::class, 'submissions'])->name('tugas.show.submissions');
     // jawaban
     Route::post('/jawaban-pg/store', [JawabanPilihanGandaSiswaController::class, 'store'])->name('jawaban-pg.store');
 

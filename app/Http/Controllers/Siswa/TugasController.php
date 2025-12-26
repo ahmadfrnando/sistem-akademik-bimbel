@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Siswa;
 
 use App\Facades\Pengguna;
 use App\Http\Controllers\Controller;
+use App\Models\Nilai;
 use App\Models\RefKategoriTugas;
+use App\Models\Siswa;
 use App\Models\Tugas;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -65,7 +67,9 @@ class TugasController extends Controller
 
                     $row = [
                         'id' => $row->id,
+                        'siswa_id' => $this->dataUser->id,
                         'isActive' => now()->between($start, $end),
+                        'isResult' => $row->nilai()->where('siswa_id', $this->dataUser->id)->exists(),
                     ];
                     return view('pages.siswa.tugas._action')->with('row', $row)->render();
                 })
@@ -80,6 +84,20 @@ class TugasController extends Controller
         }
         return view('pages.siswa.tugas.index', [
             'siswa_id' => $this->dataUser->id,
+        ]);
+    }
+
+    public function submissions(Tugas $tugas, Siswa $siswa)
+    {   
+        $pertanyaan = $tugas->pertanyaan()->with(['opsi', 'jawaban_pilihan_ganda_siswa' => function($query) use ($siswa) {
+            $query->where('siswa_id', $siswa->id);
+        }])->get();
+        $nilaiSiswa = Nilai::where('tugas_id', $tugas->id)->where('siswa_id', $siswa->id)->first();
+        return view('pages.siswa.tugas.submissions', [
+            'tugas' => $tugas,
+            'siswa' => $siswa,
+            'pertanyaan' => $pertanyaan,
+            'nilaiSiswa' => $nilaiSiswa,
         ]);
     }
     /**
