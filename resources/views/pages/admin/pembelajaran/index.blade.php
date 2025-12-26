@@ -22,6 +22,7 @@
                             <th>Tanggal</th>
                             <th>Jam</th>
                             <th>file</th>
+                            <th>Status</th>
                             <th>keterangan</th>
                         </tr>
                     </thead>
@@ -68,6 +69,10 @@
             {
                 data: 'file',
                 name: 'file',
+            },
+            {
+                data: 'status',
+                name: 'status',
             },
             {
                 data: 'keterangan',

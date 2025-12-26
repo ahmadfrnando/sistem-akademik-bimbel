@@ -6,6 +6,7 @@ use App\Facades\Pengguna;
 use App\Http\Controllers\Controller;
 use App\Models\Pembelajaran;
 use App\Models\Tugas;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -44,19 +45,34 @@ class PembelajaranController extends Controller
                     return $row->guru->nama ?? '-';
                 })
                 ->addColumn('status', function ($row) {
-                    $row = [
-                        'id' => $row->id,
-                        'dateTime' => $row->jadwal->tanggal . ' ' . $row->jadwal->jam_selesai,
-                    ];
-                    return view('pages.siswa.pembelajaran._status')->with('row', $row)->render();
+                    $start = Carbon::parse(
+                        $row->jadwal->tanggal . ' ' . $row->jadwal->jam_mulai
+                    );
+
+                    $end = Carbon::parse(
+                        $row->jadwal->tanggal . ' ' . $row->jadwal->jam_selesai
+                    );
+
+                    $isActive = now()->between($start, $end);
+
+                    return view('pages.siswa.pembelajaran._status', compact('isActive'))->render();
                 })
                 ->addColumn('action', function ($row) {
+                    $start = Carbon::parse(
+                        $row->jadwal->tanggal . ' ' . $row->jadwal->jam_mulai
+                    );
+
+                    $end = Carbon::parse(
+                        $row->jadwal->tanggal . ' ' . $row->jadwal->jam_selesai
+                    );
+
                      $row = [
                         'id' => $row->id,
                         'dateTime' => $row->jadwal->tanggal . ' ' . $row->jadwal->jam_selesai,
                         'file' => $row->file,
+                        'isActive' => now()->between($start, $end),
                     ];
-                    return '<button onClick="showFunc(\'' . $row['file'] . '\')" class="btn btn-lihat btn-primary btn-sm" ' . ($row['dateTime'] <= now() ? 'disabled' : '') . '><i class="bi bi-file-earmark-check me-1"></i>Lihat</button>';
+                    return '<button onClick="showFunc(\'' . $row['file'] . '\')" class="btn btn-lihat btn-primary btn-sm" ' . (!$row['isActive'] ? 'disabled' : '') . '><i class="bi bi-file-earmark-check me-1"></i>Lihat</button>';
                 })
                 ->rawColumns(['status', 'action'])
                 ->filterColumn('guru', function ($query, $value) {

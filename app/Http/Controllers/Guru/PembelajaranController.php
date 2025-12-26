@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Guru;
 use App\Facades\Pengguna;
 use App\Http\Controllers\Controller;
 use App\Models\Pembelajaran;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
@@ -39,11 +40,17 @@ class PembelajaranController extends Controller
                     return $row->jadwal->tanggal ?? '-';
                 })
                 ->addColumn('status', function ($row) {
-                    $row = [
-                        'tanggal' => $row->jadwal->tanggal,
-                        'jam_selesai' => $row->jadwal->jam_selesai
-                    ];
-                    return view('pages.guru.pembelajaran._status')->with('row', $row)->render();
+                    $start = Carbon::parse(
+                        $row->jadwal->tanggal . ' ' . $row->jadwal->jam_mulai
+                    );
+
+                    $end = Carbon::parse(
+                        $row->jadwal->tanggal . ' ' . $row->jadwal->jam_selesai
+                    );
+
+                    $isActive = now()->between($start, $end);
+
+                    return view('pages.guru.pembelajaran._status', compact('isActive'))->render();
                 })
                 ->addColumn('action', 'pages.guru.pembelajaran._action')
                 ->rawColumns(['action', 'status', 'jam'])

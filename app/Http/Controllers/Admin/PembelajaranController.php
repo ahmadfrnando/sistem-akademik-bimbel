@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pembelajaran;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -29,7 +30,22 @@ class PembelajaranController extends Controller
                     $jamSelesai = \Carbon\Carbon::parse($row->jadwal->jam_selesai)->format('H:i');
                     return $jamMulai . ' - ' . $jamSelesai;
                 })
-                ->rawColumns(['action', 'file'])
+                ->addColumn('status', function ($row) {
+                    $start = Carbon::parse(
+                        $row->jadwal->tanggal . ' ' . $row->jadwal->jam_mulai
+                    );
+
+                    $end = Carbon::parse(
+                        $row->jadwal->tanggal . ' ' . $row->jadwal->jam_selesai
+                    );
+
+                    $isActive = now()->between($start, $end);
+
+                    return '
+                        <span class="badge ' . ($isActive ? 'bg-success' : 'bg-secondary') . '">' . ($isActive ? 'Opened' : 'Closed') . '</span>
+                    ';
+                })
+                ->rawColumns(['action', 'file', 'status'])
                 ->filterColumn('guru_id', function ($query, $value) {
                     $query->whereHas('guru', function ($q) use ($value) {
                         $q->where('nama', 'LIKE', '%' . $value . '%');
